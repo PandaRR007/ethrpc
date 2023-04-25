@@ -1,6 +1,9 @@
 package ethrpc
 
 import (
+	"context"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
@@ -36,6 +39,10 @@ func (c *Client) SetMulticallContract(multiCallContract common.Address) *Client 
 	c.multiCallContract = multiCallContract
 
 	return c
+}
+
+func (c *Client) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
+	return c.ethClient.SuggestGasPrice(ctx)
 }
 
 func (c *Client) R() *Request {
