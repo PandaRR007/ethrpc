@@ -4,6 +4,7 @@ import (
 	"context"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
@@ -55,6 +56,23 @@ func (c *Client) R() *Request {
 
 func (c *Client) NewRequest() *Request {
 	return c.R()
+}
+
+func (c *Client) getStorageAt(ctx context.Context, account common.Address, key common.Hash, abi abi.Arguments) ([]interface{}, error) {
+	resp, err := c.ethClient.StorageAt(ctx, account, key, nil)
+	if err != nil {
+		logger.Errorf("failed to call StorageAt to %v at %v, err: %v", account, key, err)
+		return nil, err
+	}
+	logger.Debugf("raw response %v", common.Bytes2Hex(resp))
+
+	res, err := abi.Unpack(resp)
+	if err != nil {
+		logger.Errorf("failed to unpack StorageAt to %v at %v, err: %v", account, key, err)
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func (c *Client) execute(req *Request) (*Response, error) {
