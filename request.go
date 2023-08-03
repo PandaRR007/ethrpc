@@ -6,6 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 type Call struct {
@@ -115,4 +116,8 @@ func (r *Request) GetCurrentBlockTimestamp() (uint64, error) {
 	blockTimestamp := binary.BigEndian.Uint64(res.RawResponse[len(res.RawResponse)-8:])
 
 	return blockTimestamp, nil
+}
+
+func (r *Request) GetStorageAt(account common.Address, key common.Hash, abi abi.Arguments) ([]interface{}, error) {
+	return r.client.getStorageAt(r.Context(), account, key, abi)
 }
