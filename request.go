@@ -3,6 +3,7 @@ package ethrpc
 import (
 	"context"
 	"encoding/binary"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -46,6 +47,8 @@ type Request struct {
 	Calls          []*Call
 	ctx            context.Context
 	RawCallMsg     ethereum.CallMsg
+	BlockNumber    *big.Int
+	BlockHash      *common.Hash
 }
 
 // Context method returns the Context if it's already set in request
@@ -78,6 +81,18 @@ func (r *Request) AddCall(c *Call, output []interface{}) *Request {
 
 func (r *Request) SetRequireSuccess(requireSuccess bool) *Request {
 	r.RequireSuccess = requireSuccess
+
+	return r
+}
+
+func (r *Request) SetBlockNumber(blockNumber *big.Int) *Request {
+	r.BlockNumber = blockNumber
+
+	return r
+}
+
+func (r *Request) SetBlockHash(blockHash common.Hash) *Request {
+	r.BlockHash = &blockHash
 
 	return r
 }

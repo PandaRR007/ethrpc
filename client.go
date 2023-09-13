@@ -85,7 +85,12 @@ func (c *Client) execute(req *Request) (*Response, error) {
 		}
 	}
 
-	resp, err := c.ethClient.CallContract(req.Context(), req.RawCallMsg, nil)
+	var resp []byte
+	if req.BlockHash != nil {
+		resp, err = c.ethClient.CallContractAtHash(req.Context(), req.RawCallMsg, *req.BlockHash)
+	} else {
+		resp, err = c.ethClient.CallContract(req.Context(), req.RawCallMsg, req.BlockNumber)
+	}
 	if err != nil {
 		logger.Errorf("failed to call multicall, err: %v", err)
 		return nil, err
