@@ -21,6 +21,8 @@ const (
 	MethodGetCurrentBlockTimestamp = "getCurrentBlockTimestamp"
 )
 
+var zeroHash common.Hash
+
 type (
 	// RequestMiddleware type is for request middleware, called before a request is sent
 	RequestMiddleware func(*Client, *Request) error
@@ -85,7 +87,12 @@ func (c *Client) execute(req *Request) (*Response, error) {
 		}
 	}
 
-	resp, err := c.ethClient.CallContract(req.Context(), req.RawCallMsg, nil)
+	var resp []byte
+	if req.BlockHash != zeroHash {
+		resp, err = c.ethClient.CallContractAtHash(req.Context(), req.RawCallMsg, req.BlockHash)
+	} else {
+		resp, err = c.ethClient.CallContract(req.Context(), req.RawCallMsg, req.BlockNumber)
+	}
 	if err != nil {
 		logger.Errorf("failed to call multicall, err: %v", err)
 		return nil, err
