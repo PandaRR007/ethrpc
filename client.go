@@ -21,6 +21,8 @@ const (
 	MethodGetCurrentBlockTimestamp = "getCurrentBlockTimestamp"
 )
 
+var zeroHash common.Hash
+
 type (
 	// RequestMiddleware type is for request middleware, called before a request is sent
 	RequestMiddleware func(*Client, *Request) error
@@ -86,8 +88,8 @@ func (c *Client) execute(req *Request) (*Response, error) {
 	}
 
 	var resp []byte
-	if req.BlockHash != nil {
-		resp, err = c.ethClient.CallContractAtHash(req.Context(), req.RawCallMsg, *req.BlockHash)
+	if req.BlockHash != zeroHash {
+		resp, err = c.ethClient.CallContractAtHash(req.Context(), req.RawCallMsg, req.BlockHash)
 	} else {
 		resp, err = c.ethClient.CallContract(req.Context(), req.RawCallMsg, req.BlockNumber)
 	}

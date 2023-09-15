@@ -48,7 +48,7 @@ type Request struct {
 	ctx            context.Context
 	RawCallMsg     ethereum.CallMsg
 	BlockNumber    *big.Int
-	BlockHash      *common.Hash
+	BlockHash      common.Hash
 }
 
 // Context method returns the Context if it's already set in request
@@ -92,7 +92,7 @@ func (r *Request) SetBlockNumber(blockNumber *big.Int) *Request {
 }
 
 func (r *Request) SetBlockHash(blockHash common.Hash) *Request {
-	r.BlockHash = &blockHash
+	r.BlockHash = blockHash
 
 	return r
 }
