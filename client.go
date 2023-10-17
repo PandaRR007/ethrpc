@@ -4,6 +4,7 @@ import (
 	"context"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -46,6 +47,10 @@ func (c *Client) SetMulticallContract(multiCallContract common.Address) *Client 
 
 func (c *Client) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
 	return c.ethClient.SuggestGasPrice(ctx)
+}
+
+func (c *Client) EstimateGas(ctx context.Context, msg ethereum.CallMsg) (uint64, error) {
+	return c.ethClient.EstimateGas(ctx, msg)
 }
 
 func (c *Client) R() *Request {
