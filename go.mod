@@ -1,6 +1,6 @@
 module github.com/KyberNetwork/ethrpc
 
-go 1.20
+go 1.21
 
 require (
 	github.com/KyberNetwork/logger v0.0.0-20230407035901-da6d1ed0bb36
