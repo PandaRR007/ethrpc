@@ -15,6 +15,6 @@ func New(url string) *Client {
 }
 
 // NewWithClient method creates a new RPC client with given `ethclient.Client`.
-func NewWithClient(ec *ethclient.Client) *Client {
+func NewWithClient(ec EthClient) *Client {
 	return createClient(ec)
 }

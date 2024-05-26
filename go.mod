@@ -1,4 +1,4 @@
-module github.com/KyberNetwork/ethrpc
+module github.com/PandaRR007/ethrpc
 
 go 1.21
 

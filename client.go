@@ -4,12 +4,10 @@ import (
 	"context"
 	"math/big"
 
+	"github.com/KyberNetwork/logger"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
-
-	"github.com/KyberNetwork/logger"
 )
 
 const (
@@ -35,7 +33,7 @@ type (
 )
 
 type Client struct {
-	ethClient         *ethclient.Client
+	ethClient         EthClient
 	multiCallContract common.Address
 	beforeRequest     []RequestMiddleware
 	afterResponse     []ResponseMiddleware
@@ -128,7 +126,7 @@ func (c *Client) execute(req *Request) (*Response, error) {
 	return response, err
 }
 
-func createClient(ec *ethclient.Client) *Client {
+func createClient(ec EthClient) *Client {
 	c := &Client{
 		ethClient: ec,
 	}
